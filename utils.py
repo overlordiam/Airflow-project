@@ -1,11 +1,13 @@
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
+import pandas as pd
 import os
 
 load_dotenv()
 
 api_key = os.getenv('GOOGLE_API_KEY')
-video_id = 'q8q3OFFfY6c'
+# print(api_key)
+video_id = 'lYRDD_drRuI'
 
 youtube = build('youtube', 'v3', developerKey=api_key)
 
@@ -17,10 +19,19 @@ def get_comments(youtube, video_id):
         textFormat="plainText"
     ).execute()
 
+
     while results:
         for item in results['items']:
             comment = item['snippet']['topLevelComment']['snippet']['textDisplay']
-            comments.append(comment)
+            author = item['snippet']['topLevelComment']['snippet']['authorDisplayName']
+            author = author.replace('@', '')
+            published_time = item['snippet']['topLevelComment']['snippet']['publishedAt']
+
+            comments.append({
+                'author': author,
+                'comment': comment,
+                'published_time': published_time
+            })
 
         if 'nextPageToken' in results:
             results = youtube.commentThreads().list(
@@ -32,8 +43,17 @@ def get_comments(youtube, video_id):
         else:
             break
 
+    print(f'Finished processing all the comments.')
+
     return comments
 
+
+def make_csv(comments):
+    df = pd.DataFrame(comments)
+    df.to_csv('youtube_comments.csv')
+
 video_comments = get_comments(youtube, video_id)
-for comment in video_comments:
-    print(comment)
+make_csv(video_comments)
+
+
+# print(video_comments)
