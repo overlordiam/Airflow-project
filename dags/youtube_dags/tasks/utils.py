@@ -1,13 +1,8 @@
-from googleapiclient.discovery import build
-from dotenv import load_dotenv
-import s3fs
-import pandas as pd
-import os
+
 
 
 def youtube_etl():
 
-    load_dotenv()
     api_key = os.getenv('GOOGLE_API_KEY')
     video_id = 'lYRDD_drRuI'
 

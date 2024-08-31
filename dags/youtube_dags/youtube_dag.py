@@ -3,7 +3,8 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 from datetime import datetime
-from utils import youtube_etl
+from dags.youtube_dags.tasks.ingest_data import ingest_data
+from dags.youtube_dags.tasks.process_data import process_data
 
 
 default_args = {
@@ -18,14 +19,25 @@ default_args = {
 }
 
 dag = DAG(
-    dag_id = 'youtube_dag',
+    dag_id = 'youtube_videos_analytics_dag',
     description = 'youtube data lifecylce',
     default_args=default_args,
-    schedule_interval=timedelta(days=1)
+    schedule_interval=None
 )
 
-run_etl = PythonOperator(
-    task_id = 'fetch_youtube_comments',
-    python_callable=youtube_etl,
+run_ingestion = PythonOperator(
+    task_id = 'fetch_video_info',
+    python_callable=ingest_data,
     dag=dag,
 )
+
+run_process = PythonOperator(
+    task_id = 'process_video_info',
+    python_callable=process_data,
+    dag=dag
+)
+
+run_ingestion >> run_process
+
+
+
