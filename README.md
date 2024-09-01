@@ -19,7 +19,7 @@ This is a project on orchestrating the flow of data from Google's API to an S3 b
 - Python
 - Pandas
 - Apache Airflow
-- AWS S3 buckets
+- AWS S3
 
 ## How to run
 1) Create an AWS account
