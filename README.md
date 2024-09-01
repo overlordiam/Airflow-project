@@ -1,19 +1,28 @@
 # Data orchestration with Airflow and AWS S3
 
 ## Overview
-This is a project on orchestrating the flow of data from Google's API to an S3 bucket via Apache Airflow. 
+This project aims to develop a robust and scalable data pipeline that automates the process of extracting data from Google's API and storing it in an Amazon S3 bucket. Utilizing Apache Airflow as the orchestrator, the pipeline ensures efficient scheduling, monitoring, and management of data flows.
 
-## Components
+## Key Components
 
 #### Data Source: Youtube trending videos data
 - The application emulates streaming data by sampling records from a CSV file in quick intervals.
 
 #### Apache Airflow:
-- Using Airflow, I orchestrated the data flow from an API to an S3 bucket, read data from the bucket and processed the data, and then redirected it to a new S3 bucket. This
-  is a rudimentary approach of a complex ETL process.
-
+- The orchestration tool used to automate and manage the workflow of data extraction, transformation, and loading (ETL).
+  
 #### AWS S3:
-- Stores any form of data and provides easy and cheap access to it.
+- The storage solution for holding processed data, providing durability and easy access for downstream applications.
+
+## Workflow
+### Data Ingestion:
+- Use Airflow's PythonOperator to call Google's API and fetch data.
+- Implement authentication and error handling to ensure reliable data retrieval.
+### Data Transformation:
+- Process the raw data using Python scripts within Airflow tasks.
+- Clean and format the data to meet storage requirements.
+### Data Storage:
+- Use Airflow's S3Hook to upload the transformed data to an S3 bucket.
 
 ## Technologies used
 - Python
