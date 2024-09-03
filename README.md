@@ -30,12 +30,28 @@ This project aims to develop a robust and scalable data pipeline that automates 
 - Apache Airflow
 - AWS S3
 
-## How to run
-1) Create an AWS account
-2) Download and install Apache Airflow
-3) Clone and download the code in from repository and run it in a Python IDE (preferably VScode)
-6) Create an S3 bucket to store the data
-7) Launch the Airflow console with the following command
+## Setup
+1. **Install Dependencies**: Use `pip` to install the required packages.
    ```bash
-   airflow standalone
-8) Navigate to youtube_dag and run it
+   pip install apache-airflow google-api-python-client pandas s3fs python-dotenv
+   ```
+
+2. **Environment Variables**: Create a `.env` file in the project root and add your Google API key:
+   ```
+   GOOGLE_API_KEY=your_api_key_here
+   ```
+
+3. **Run Airflow**: Start the Airflow web server and scheduler to manage the DAGs.
+   ```bash
+   airflow webserver --port 8080
+   airflow scheduler
+   ```
+
+4. **Access the Airflow UI**: Open your browser and navigate to `http://localhost:8080` to trigger the DAG.
+
+## Usage
+- The DAG `youtube_videos_analytics_dag` can be triggered manually from the Airflow UI. It will fetch the most popular videos, process the data, and store the results in the specified S3 bucket.
+
+## Output
+- The ingested data is saved as `raw_youtube_comments.csv` in the S3 bucket.
+- The processed data is saved as `processed_youtube_comments.csv` in the same S3 bucket.
